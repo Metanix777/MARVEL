@@ -8,7 +8,6 @@ import ErrorMessage from "./../errorMessage/ErrorMessage";
 class RandomChar extends Component {
     constructor(props) {
         super(props);
-        this.updateChar();
     }
 
     state = {
@@ -16,6 +15,12 @@ class RandomChar extends Component {
         loading: true,
         error: false,
     };
+
+    componentDidMount() {
+        this.updateChar();
+    }
+
+    componentWillUnmount() {}
 
     onCharLoaded = (char) => {
         this.setState({ char, loading: false });
@@ -43,6 +48,10 @@ class RandomChar extends Component {
         return "No description for this character";
     };
 
+    onButtonClick = () => {
+        this.updateChar();
+    };
+
     render() {
         const { char, loading, error } = this.state;
         const errorMessage = error ? <ErrorMessage /> : null;
@@ -61,7 +70,10 @@ class RandomChar extends Component {
                         Do you want to get to know him better?
                     </p>
                     <p className="randomchar__title">Or choose another one</p>
-                    <button className="button button__main">
+                    <button
+                        className="button button__main"
+                        onClick={this.onButtonClick}
+                    >
                         <div className="inner">try it</div>
                     </button>
                     <img
@@ -78,15 +90,24 @@ class RandomChar extends Component {
 const View = ({ char }) => {
     const { name, description, thumbnail, homepage, wiki } = char;
 
+    const styleImg =
+        char.thumbnail ===
+        "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg"
+            ? { objectFit: "contain" }
+            : null;
+
     return (
         <div className="randomchar__block">
             <img
                 src={thumbnail}
                 alt="Random character"
                 className="randomchar__img"
+                style={styleImg}
             />
             <div className="randomchar__info">
-                <p className="randomchar__name">{name}</p>
+                <p className="randomchar__name">
+                    {name.length > 20 ? name.slice(0, 20) + "..." : name}
+                </p>
                 <p className="randomchar__descr">
                     {description
                         ? `${description.slice(0, 170)}...`
