@@ -26,8 +26,9 @@ class CharList extends Component {
         );
     };
 
-    onClickCard = (i) => {
+    onClickCard = (i, id) => {
         this.setState({ activeCard: i });
+        this.props.onCharSelected(id);
     };
 
     render() {
@@ -41,7 +42,7 @@ class CharList extends Component {
                             ? "char__item char__item_selected"
                             : "char__item"
                     }
-                    onClick={() => this.onClickCard(i)}
+                    onClick={() => this.onClickCard(i, item.id)}
                 >
                     <img
                         src={
