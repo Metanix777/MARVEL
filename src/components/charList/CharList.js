@@ -1,6 +1,5 @@
 import { Component } from "react";
 import "./charList.scss";
-import abyss from "../../resources/img/abyss.jpg";
 import MarvelService from "../../services/MarvelService";
 
 class CharList extends Component {
@@ -19,9 +18,9 @@ class CharList extends Component {
     marvelServices = new MarvelService();
 
     onCardsLoaded = async () => {
-        await this.marvelServices.getAllCharacters().then((res) =>
+        await this.marvelServices.getAllCharacters().then((cards) =>
             this.setState({
-                cards: [...res.data.results],
+                cards,
             })
         );
     };
@@ -34,6 +33,12 @@ class CharList extends Component {
     render() {
         const { cards, activeCard } = this.state;
         const res = cards.map((item, i) => {
+            const styleImg =
+                item.thumbnail ===
+                "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg"
+                    ? { objectFit: "contain" }
+                    : null;
+
             return (
                 <li
                     key={item.id}
@@ -45,10 +50,9 @@ class CharList extends Component {
                     onClick={() => this.onClickCard(i, item.id)}
                 >
                     <img
-                        src={
-                            item.thumbnail.path + "." + item.thumbnail.extension
-                        }
+                        src={item.thumbnail}
                         alt={item.name}
+                        style={styleImg}
                     />
                     <div className="char__name">{item.name}</div>
                 </li>

@@ -65,8 +65,6 @@ class CharInfo extends Component {
             <View char={char} />
         ) : null;
 
-        console.log(char);
-
         return (
             <div className="char__info">
                 {skeleton}
@@ -80,10 +78,15 @@ class CharInfo extends Component {
 
 const View = ({ char }) => {
     const { name, description, thumbnail, homepage, wiki, comics } = char;
+    const styleImg =
+        thumbnail ===
+        "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg"
+            ? { objectFit: "contain" }
+            : null;
     return (
         <>
             <div className="char__basics">
-                <img src={thumbnail} alt={name} />
+                <img src={thumbnail} alt={name} style={styleImg} />
                 <div>
                     <div className="char__info-name">{name}</div>
                     <div className="char__btns">
